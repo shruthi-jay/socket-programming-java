@@ -1,0 +1,71 @@
+import java.net.*;
+import java.io.*;
+public class client2 {
+ public static void main(String[] args) {
+ try {
+ InetAddress ip = InetAddress.getByName("localhost");
+ DatagramSocket ds1 = new DatagramSocket();
+ BufferedReader br = new BufferedReader(new
+InputStreamReader(System.in));
+ System.out.print("Enter User Name : ");
+ String name = br.readLine();
+ DatagramPacket dp1 = new DatagramPacket(name.getBytes(),
+name.length(), ip, 1111);
+ ds1.send(dp1);
+ ds1.close();
+ System.out.print("Enter password : ");
+ String passwd = br.readLine();
+ DatagramSocket ds2 = new DatagramSocket();
+ DatagramPacket dp2 = new DatagramPacket(passwd.getBytes(),
+passwd.length(), ip, 2222);
+ ds2.send(dp2);
+ ds2.close();
+ DatagramSocket ds3 = new DatagramSocket(3333);
+ byte[] bufferstat = new byte[1024];
+ DatagramPacket dp3 = new DatagramPacket(bufferstat, 1024);
+ ds3.receive(dp3);
+ String status= new String(dp3.getData());
+ status = status.trim();
+ System.out.println("status is "+ status);
+ if(status.equals("true"))
+ { System.out.println("enter 1 to add ,2 to delete, 3 to
+exit");
+ String nam = br.readLine();
+ DatagramSocket ds4 = new DatagramSocket();
+ DatagramPacket dp4 = new DatagramPacket(nam.getBytes(),
+nam.length(), ip, 4444);
+ ds4.send(dp4);
+ if(nam.equals("1"))
+ {
+ System.out.println("Enter the notice u want to add :");
+ String notice = br.readLine();
+DatagramSocket ds5 = new DatagramSocket();
+ DatagramPacket dp5 = new
+DatagramPacket(notice.getBytes(), notice.length(), ip, 5555);
+ ds5.send(dp5);
+ds5.close();
+System.out.println("entered");
+ }
+ else if(nam.equals("2"))
+ {
+ System.out.println("u want to delete,enter position");
+ String choice = br.readLine();
+ DatagramSocket ds5 = new DatagramSocket();
+ DatagramPacket dp5 = new DatagramPacket(choice.getBytes(),
+choice.length(), ip, 5555);
+ ds5.send(dp5);
+ ds5.close();
+ System.out.println("deleted");
+ }
+ }
+ else
+ {
+ System.out.println("\n you are not authenticated for access
+");
+ }
+ ds3.close();
+ } catch (Exception e) {
+ System.out.println(e);
+ }
+ }
+}
