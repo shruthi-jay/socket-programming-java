@@ -1,0 +1,46 @@
+import java.net.*;
+import java.io.*;
+public class Authentictnserver {
+ static DatagramPacket dp3;
+ public static void main(String[] args) {
+ try {
+ //receiving
+ InetAddress ip = InetAddress.getByName("localhost");
+ DatagramSocket ds1 = new DatagramSocket(1111);
+ byte[] buffer = new byte[1024];
+ DatagramPacket dp = new DatagramPacket(buffer, 1024);
+ ds1.receive(dp);
+ String name = new String(dp.getData());
+ name = name.trim();
+ ds1.close();
+ System.out.println(name);
+ DatagramSocket ds2 = new DatagramSocket(2222);
+ byte[] bufferPass = new byte[1024];
+ DatagramPacket dp2 = new DatagramPacket(bufferPass, 1024);
+ ds2.receive(dp2);
+ String passwd = new String(dp2.getData());
+ passwd = passwd.trim();
+ ds2.close();
+ System.out.println(passwd);
+ //send
+ DatagramSocket ds3 = new DatagramSocket();
+ String status="false";
+ if (name.equalsIgnoreCase("sruthi") &&
+passwd.equals("123456789"))
+ {
+ System.out.println("Valid User");
+ status="true";
+ }
+ else
+ {
+ System.out.println("Wrong !");
+ }
+ dp3 = new DatagramPacket(status.getBytes(), status.length(),
+ip, 3333);
+ ds3.send(dp3);
+ ds3.close();
+ } catch (Exception e) {
+ System.out.println(e);
+ }
+ }
+}
