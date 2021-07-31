@@ -1,0 +1,44 @@
+import java.net.*;
+import java.io.*;
+import java.util.ArrayList;
+public class boardServer {
+ public static void main(String[] args) {
+ try {
+ ArrayList<String> str = new ArrayList<String>();
+ str.add("notice1");
+ str.add("notice2");
+ str.add("notice3");
+ str.add("notice4");
+ str.add("notice5");
+ System.out.println("ArrayList : " + str);
+ InetAddress ip = InetAddress.getByName("localhost");
+ DatagramSocket ds4 = new DatagramSocket(4444);
+ byte[] buffer1 = new byte[1024];
+ DatagramPacket dp4 = new DatagramPacket(buffer1, 1024);
+ DatagramSocket ds5 = new DatagramSocket(5555);
+ byte[] buffer2 = new byte[1024];
+ DatagramPacket dp5 = new DatagramPacket(buffer2, 1024);
+ ds4.receive(dp4);
+ String choice = new String(dp4.getData());
+ choice=choice.trim();
+ //System.out.println("choice received"+choice);
+ ds5.receive(dp5);
+ String notice = new String(dp5.getData());
+ notice = notice.trim();
+ if(choice.equals("1"))
+ {
+ str.add(notice);
+ }
+ else
+ {
+ int c=Integer.parseInt(choice);
+ System.out.println("notices : " + str);
+ str.remove(c);
+ }
+ System.out.println("\n current notices: " + str);
+ ds4.close();
+ //System.out.println(notice);
+ } catch (Exception e) {
+ e.printStackTrace();
+ }
+ }}
